@@ -64,11 +64,19 @@ def loglikelihood(x, y, beta,sigma):
 loglikelihood(X, Y, beta,sigma)
 
 
-# In[65]:
+# In[69]:
 
 
-def metropolis(x, y, N=10000,beta):
-    l_param = [np.array([1/8000.0, 10.0])]
+def logprior(beta):
+    return np.ones(len(beta))/beta
+#print(logprior(beta))
+
+
+# In[72]:
+
+
+def metropolis(x, y,beta, N):
+    l_param = [np.array([0.5,0.7,0.1,0.2])]
     sigma_param = np.array([1.2, 0.5,0.3,0.4,0.5])
     n_param = len(sigma_param)
     logposterior = [0]
@@ -85,8 +93,7 @@ def metropolis(x, y, N=10000,beta):
             logposterior.append(logposterior_nuevo)
         else:
             l_param.append(l_param[i-1])
-            logposterior.append(logposterior_viejo)
-    
+            logposterior.append(logposterior_viejo)   
     l_param = np.array(l_param)
     l_param = l_param[N//10:,:] # descartamos el primer 10% de la cadena
     logposterior = np.array(logposterior)
@@ -94,10 +101,10 @@ def metropolis(x, y, N=10000,beta):
     return l_param, logposterior
 
 
-# In[63]:
+# In[73]:
 
 
-metropolis(X[0],Y,69,sigma)
+metropolis(X[0],Y,sigma,69)
 
 
 # In[38]:
