@@ -39,29 +39,35 @@ sigma=0.1
 w=2*np.ones(len(X))/sigma**2
 
 
-# In[44]:
+# In[57]:
 
 
 beta=np.ones(len(X[0]+1))
 c=beta[0]
-i
+def y_test(x,beta):
+    sum=0
+    for j in range(len(beta)):
+        sum=beta[j]*x[j]
+    return sum
+y_test(X,beta)
 
 
-# In[48]:
+# In[58]:
 
 
 def loglikelihood(x, y, beta,sigma):
     y_model = y_test(x, beta)
     sum=1/(np.power(2*np.pi,0.5)*sigma)
     for i in range(len(x)):
-        sum+=(y_model[i]-y)**2
+        sum+=-(y_model[i]-y)**2/sigma**2
     return sum
+loglikelihood(X, Y, beta,sigma)
 
 
-# In[40]:
+# In[51]:
 
 
-def metropolis(x_obs, y_obs, N = len(X)):
+def metropolis(x_obs, y_obs, N =69,sigma):
     l_param = [np.array([1/8000.0, 10.0])]
     sigma_param = np.array([1E-4, 0.5])
     n_param = len(sigma_param)
@@ -88,10 +94,10 @@ def metropolis(x_obs, y_obs, N = len(X)):
     return l_param, logposterior
 
 
-# In[41]:
+# In[50]:
 
 
-metropolis(X[0],Y)
+metropolis(X[0],Y,sigma)
 
 
 # In[38]:
