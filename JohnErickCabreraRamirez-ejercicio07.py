@@ -64,19 +64,19 @@ def loglikelihood(x, y, beta,sigma):
 loglikelihood(X, Y, beta,sigma)
 
 
-# In[51]:
+# In[65]:
 
 
-def metropolis(x_obs, y_obs, N,sigma):
+def metropolis(x, y, N=10000,beta):
     l_param = [np.array([1/8000.0, 10.0])]
-    sigma_param = np.array([1E-4, 0.5])
+    sigma_param = np.array([1.2, 0.5,0.3,0.4,0.5])
     n_param = len(sigma_param)
     logposterior = [0]
     for i in range(1,N):
         propuesta  = l_param[i-1] + np.random.normal(size=n_param)*sigma_param
         #print(propuesta)
-        logposterior_viejo = loglikelihood(x_obs, y_obs, l_param[i-1]) + logprior(l_param[i-1])
-        logposterior_nuevo = loglikelihood(x_obs, y_obs, propuesta) + logprior(propuesta)
+        logposterior_viejo = loglikelihood(x, y, l_param[i-1],sigma) + logprior(l_param[i-1])
+        logposterior_nuevo = loglikelihood(x, y, propuesta,sigma) + logprior(propuesta)
 
         r = min(1,np.exp(logposterior_nuevo-logposterior_viejo))
         alpha = np.random.random()
